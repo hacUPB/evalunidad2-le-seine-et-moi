@@ -1,0 +1,1 @@
+../tester/run-tests.sh: line 27: 18370 Segmentation fault      ./main < tests/15.in
