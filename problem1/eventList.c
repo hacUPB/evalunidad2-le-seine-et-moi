@@ -14,7 +14,7 @@ EventList *CreateEventList(void)
 }
 
 void DestroyEventList(EventList *this)
-{|
+{
     free(this); 
 }
 
