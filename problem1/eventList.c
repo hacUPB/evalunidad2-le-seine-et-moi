@@ -21,7 +21,7 @@ void DestroyEventList(EventList *this)
 Event *SearchEvent(EventList *this, char *name)
 {
     Event *phead = this->head;
-    uint8_t bool = 0;
+    
     if(this->isEmpty==0)
     {
         while (phead->next != NULL)
@@ -29,12 +29,12 @@ Event *SearchEvent(EventList *this, char *name)
             if(strcmp(name, phead->eventName) == 0)
             {
                 printf("%s",phead->eventName);
-                bool=1;
+                this->isEmpty=1;
                 break;
             }
             phead = phead->next;
         }
-        if(bool==0)
+        if(this->isEmpty==0)
         {
             printf("NULL");
         }
@@ -120,7 +120,7 @@ void RemoveEvent(EventList *this, char *name)
         {
             Event *phead = this->head;
             Event  *pn = this->head;
-            uint8_t bool = 0;
+            this->isEmpty=0;
             //printf("entra\n");
             while (phead->next != NULL)
             {
@@ -128,12 +128,12 @@ void RemoveEvent(EventList *this, char *name)
                 {
                     pn = phead->next;
                     phead->next = phead->next->next;
-                    bool = 0;
+                  this->isEmpty= 0;
                     break;
                 }
                 phead = phead->next;
             }
-            if (bool == 1)
+            if (this->isEmpty== 1)
             {
                 DestroyEvent(pn);
             }         
