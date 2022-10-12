@@ -3,159 +3,121 @@
 #include <stdio.h>
 #include <string.h>
 
-EventList *CreateEventList(void)
+EventList *CreateEventList(void)  
 {
     EventList *eventList = malloc(sizeof(EventList));
-    eventList ->isEmpty = 1;
-    eventList ->head = NULL;
-    eventList ->last = NULL;
-    return eventList;
-
-}
-
-void DestroyEventList(EventList *this)
-{
-    free(this); 
-}
-
-Event *SearchEvent(EventList *this, char *name)
-{
-    Event *phead = this->head;
+    eventList->isEmpty = 0;
+    eventList->head = NULL;
+    eventList->last = NULL;
     
-    if(this->isEmpty==0)
-    {
-        while (phead->next != NULL)
-        {
-            if(strcmp(name, phead->eventName) == 0)
-            {
-                printf("%s",phead->eventName);
-                this->isEmpty=1;
-                break;
-            }
-            phead = phead->next;
-        }
-        if(this->isEmpty==0)
-        {
-            printf("NULL");
-        }
-        this->head = phead; 
-    }
-    else
-    {
-        printf("NULL");
-    }
+    return eventList;
 }
 
 void AddEvent(EventList *this, Event *event)
 {
-    if(this->isEmpty == 1)
-    {
-        this->isEmpty = 1;
-        this->head = event;
-        this->last = event; 
-    }
-    else
-    {
-        Event *phead = this->head;
-        
-        while(phead != NULL)
-        {
-            //printf("nametec: %s\n", event->eventName);
-            //printf("namehead: %s\n", this->head->eventName);
-            if(strcmp(event->eventName, phead->eventName) == 0)
-            {
-                return;
-            }    
-            phead = phead->next;
-        }
-        // Insertar el evento en la lista
-
-        this->last->next = event;
-        this->last = event;  
-    }
+    Event *actualEvent = this->head;
+   
     
+   if(this->head == NULL)
+   {
+     this->head = event;
+     this->last = event;
+     this->isEmpty = 1;   
+      
+   }
+   else
+   {
+    while (actualEvent != NULL)
+     
+    {
+        if(strcmp(event->eventName, actualEvent->eventName) == 0)
+        return;
+
+        actualEvent = actualEvent->next;
+    }
+       this->last->next = event;
+       this->last=event;
+   }
+}
+
+Event *SearchEvent(EventList *this, char *name)
+{
+    Event *actualEvent = this->head;
+    if (this->isEmpty == 1)
+    {
+        while (actualEvent != NULL)
+        {
+            if (strcmp(name, actualEvent->eventName)==0)
+            return actualEvent;
+            actualEvent = actualEvent->next;
+        }
+    }
+    actualEvent = NULL;
+    return actualEvent;
+}
+
+
+
+void DestroyEventList(EventList *this)
+{
+    free(this);
 }
 
 void RemoveEvent(EventList *this, char *name)
 {
-    //printf("nametec: %c\n", *name);
-    //printf("namehead: %c\n", *this->head->eventName);
-
-    if (this->isEmpty == 0)
-    {       
-        if(strcmp(name, this->head->eventName) == 0)
-        {
-            Event *phead = this->head;
-            if(this->head->next == NULL)
+    if (this->isEmpty == 1)
+    {
+       Event *actualEvent = this->head->next;  
+       Event *lastEvent = this->head;
+       if(strcmp(name, lastEvent->eventName)==0)
+       {
+            if(lastEvent->next == NULL)
             {
                 this->head = NULL;
                 this->last = NULL;
-                this->isEmpty = 1;
-                DestroyEvent(this->head);
+                this->isEmpty = 0;
+                DestroyEvent(lastEvent);
             }
             else
             {
-                this->head = this->head->next;
-                DestroyEvent(phead);
+                this->head=actualEvent;
+                DestroyEvent(lastEvent);
             }
-            
-        }
-        else if (strcmp(name, this->last->eventName) == 0)
-        {
-            Event *phead = this->head;
-            //printf("ultev\n");
-            while (phead->next != NULL)
+       }
+       while (actualEvent != NULL)
+       {
+            if(strcmp(name, actualEvent->eventName)==0)
             {
-                if(phead->next->next == NULL)
+                lastEvent->next = actualEvent->next;
+                if (this->last->next == NULL)
                 {
-                    this->last = phead->next;
-                    phead->next = NULL;
-                    break;
+                    this->last = lastEvent;
+                    DestroyEvent(actualEvent);
                 }
-                phead = phead->next;
             }
-            DestroyEvent(this->last);
-        }
-        else 
-        {
-            Event *phead = this->head;
-            Event  *pn = this->head;
-            this->isEmpty=0;
-            //printf("entra\n");
-            while (phead->next != NULL)
-            {
-                if(strcmp(name, phead->next->eventName) == 0)
-                {
-                    pn = phead->next;
-                    phead->next = phead->next->next;
-                  this->isEmpty= 0;
-                    break;
-                }
-                phead = phead->next;
-            }
-            if (this->isEmpty== 1)
-            {
-                DestroyEvent(pn);
-            }         
-        }        
+            lastEvent = actualEvent;
+            actualEvent = actualEvent->next;
+       }
     }
 }
 
 void ListEvents(EventList *this)
 {
-    Event *phead = this->head;
+    if (this->isEmpty == 1)
+    {
+        Event *actualEvent = this->head;
 
-    if(this->isEmpty == 1)
+
+        while (actualEvent != NULL)
+        {
+            printf("%s\n", actualEvent->eventName);
+            actualEvent = actualEvent->next;
+        }       
+    }
+    else
     {
         printf("empty\n");
     }
-    else 
-    {
-        printf("%s\n",this->head->eventName);
-        while (phead->next != NULL)
-        {
-            phead = phead->next;
-            printf("%s\n",phead->eventName); 
-        }
-    }
+
 }
+
