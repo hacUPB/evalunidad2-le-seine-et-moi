@@ -1,3 +1,8 @@
+#include "eventList.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 EventList *CreateEventList(void)
 {
     EventList *eventList = malloc(sizeof(EventList));
